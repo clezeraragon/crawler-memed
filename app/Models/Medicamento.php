@@ -48,5 +48,6 @@ class Medicamento extends Eloquent
 	public function pivot_medicamentos()
 	{
 		return $this->hasMany(\Memed\Models\PivotMedicamento::class, 'id_medicamento');
+
 	}
 }

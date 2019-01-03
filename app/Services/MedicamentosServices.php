@@ -9,6 +9,7 @@
 namespace Memed\Services;
 
 
+use Illuminate\Support\Facades\Artisan;
 use Memed\Models\Medicamento;
 
 class MedicamentosServices
@@ -24,13 +25,32 @@ class MedicamentosServices
     public function lists($search = null)
     {
         if($search){
-            return $this->medicamento
+
+            $medicamento = $this->medicamento
                 ->where('titulo','like','%'.$search.'%')
                 ->Orwhere('descricao','like','%'.$search.'%')
                 ->Orwhere('subtitulo','like','%'.$search.'%')
+                ->select('id','titulo','descricao','subtitulo')
                 ->paginate(10);
+
+            if($medicamento->isEmpty()){
+
+                Artisan::call('command:crawler',[
+                    'char' => $search
+                ]);
+
+                $medicamento = $this->medicamento
+                    ->where('titulo','like','%'.$search.'%')
+                    ->Orwhere('descricao','like','%'.$search.'%')
+                    ->Orwhere('subtitulo','like','%'.$search.'%')
+                    ->select('id','titulo','descricao','subtitulo')
+                    ->paginate(10);
+
+                return $medicamento;
+            }
+            return $medicamento;
         }
-        return $this->medicamento->select('id','titulo')->paginate(10);
+        return $this->medicamento->select('id','titulo','descricao','subtitulo')->paginate(10);
     }
 
 }
