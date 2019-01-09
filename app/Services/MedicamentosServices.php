@@ -27,10 +27,12 @@ class MedicamentosServices
         if($search){
 
             $medicamento = $this->medicamento
+                ->join('pivot_medicamentos','pivot_medicamentos.id_medicamento','=','medicamentos.id')
+                ->join('tipos_targetas','tipos_targetas.id','=','pivot_medicamentos.id_tipo_targeta')
                 ->where('titulo','like','%'.$search.'%')
                 ->Orwhere('descricao','like','%'.$search.'%')
                 ->Orwhere('subtitulo','like','%'.$search.'%')
-                ->select('id','titulo','descricao','subtitulo')
+                ->select('medicamentos.id','titulo','descricao','subtitulo','tarja')
                 ->paginate(10);
 
             if($medicamento->isEmpty()){
@@ -40,17 +42,23 @@ class MedicamentosServices
                 ]);
 
                 $medicamento = $this->medicamento
+                    ->join('pivot_medicamentos','pivot_medicamentos.id_medicamento','=','medicamentos.id')
+                    ->join('tipos_targetas','tipos_targetas.id','=','pivot_medicamentos.id_tipo_targeta')
                     ->where('titulo','like','%'.$search.'%')
                     ->Orwhere('descricao','like','%'.$search.'%')
                     ->Orwhere('subtitulo','like','%'.$search.'%')
-                    ->select('id','titulo','descricao','subtitulo')
+                    ->select('medicamentos.id','titulo','descricao','subtitulo','tarja')
                     ->paginate(10);
 
                 return $medicamento;
             }
             return $medicamento;
         }
-        return $this->medicamento->select('id','titulo','descricao','subtitulo')->paginate(10);
+        return $this->medicamento
+                    ->join('pivot_medicamentos','pivot_medicamentos.id_medicamento','=','medicamentos.id')
+                    ->join('tipos_targetas','tipos_targetas.id','=','pivot_medicamentos.id_tipo_targeta')
+                    ->select('medicamentos.id','titulo','descricao','subtitulo','tarja')
+                    ->paginate(10);
     }
 
 }
