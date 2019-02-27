@@ -14,7 +14,7 @@
     <style>
         html {
             height: 100%;
-            background: radial-gradient(ellipse at bottom, #ab7ecb 0%, rgb(6, 211, 255) 100%);
+            background: radial-gradient(ellipse at bottom, #cbc945 0%, rgb(6, 211, 255) 100%);
             overflow: hidden;
         }
 
