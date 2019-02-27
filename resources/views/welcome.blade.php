@@ -117,7 +117,7 @@
             <div id='stars3'></div>
             <div id='title'>
                 <h1> CRAWLER</h1>
-                <img src="{{asset('seeds-images/DrPediu_logo.png')}}" style="width: 50%">
+                <img src="{{asset('svg/DrPediu_logo.png')}}" style="width: 50%">
             </div>
 
             <div class="links">
