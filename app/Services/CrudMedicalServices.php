@@ -49,15 +49,17 @@ class CrudMedicalServices
     public function store($param)
     {
 
-        try{
+        try {
 
             \DB::beginTransaction();
 
             $data = $this->medicalServices->processCrawlerMemed($param);
 
-            foreach ($data['attributes'] as $attributes){
+            if (isset($data['attributes'])) {
 
-                    if(isset($attributes)) {
+                foreach ($data['attributes'] as $attributes) {
+
+                    if (isset($attributes)) {
 
                         $medicamento = $this->medicamento->firstOrCreate([
                             'titulo' => $attributes['titulo'],
@@ -97,14 +99,20 @@ class CrudMedicalServices
 
                     }
 
+                }
+                \DB::commit();
+                return response()->json(['status' => [
+                    'success' => 'Registros criados com sucesso!',
+                    'total de registros buscados' => $data['total']]
+                ]);
             }
-            \DB::commit();
             return response()->json(['status' => [
-                'success' => 'Registros criados com sucesso!',
-                'total de registros buscados' => $data['total']]
-            ]);
+                'error' => 'Erro code status Http => ' . $data]
 
-        }catch (\Exception $ex){
+            ]);
+        }
+        catch
+        (\Exception $ex){
             \DB::rollback();
             return response()->json(['status' => ['error' => 'Erro interno: ' . $ex->getMessage() . ' (' . $ex->getFile() . '/' . $ex->getLine() . ')']], 500);
         }
